@@ -6,7 +6,7 @@ RUN apk add --no-cache git
 RUN echo >go.mod && go get -u golang.org/x/vgo
 
 ADD . .
-RUN vgo build
+RUN vgo build -ldflags "-w"
 
 ENTRYPOINT reverse-proxy -addr=:5555
 
