@@ -1,0 +1,13 @@
+FROM golang:1.10-alpine
+
+WORKDIR /go/src/github.com/taland/reverse-proxy
+
+RUN apk add --no-cache git
+RUN echo >go.mod && go get -u golang.org/x/vgo
+
+ADD . .
+RUN vgo build
+
+ENTRYPOINT reverse-proxy -addr=:5555
+
+EXPOSE 5555

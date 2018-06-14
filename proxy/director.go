@@ -37,6 +37,7 @@ func (d *Director) Director(req *http.Request) {
 	if req.Method == http.MethodPost {
 		err := errors.New("Not Allowed")
 		*req = *req.WithContext(context.WithValue(req.Context(), accessDenied, &directorError{err: err, statusCode: http.StatusMethodNotAllowed}))
+		return
 	}
 	*req = *req.WithContext(context.WithValue(req.Context(), accessAllowed, ""))
 }
