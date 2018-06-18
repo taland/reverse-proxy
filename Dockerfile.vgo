@@ -2,11 +2,20 @@ FROM golang:1.10-alpine
 
 WORKDIR /go/src/github.com/taland/reverse-proxy
 
-RUN apk add --no-cache git
+RUN set -eux; \
+    apk add --no-cache --virtual .build-deps \
+    git \
+    gcc \
+    musl-dev
+
 RUN echo >go.mod && go get -u golang.org/x/vgo
 
 ADD . .
 RUN vgo build -ldflags "-w"
+RUN vgo test -cover ./...
+
+RUN rm -rf /go-alpine-patches; \
+    apk del .build-deps;
 
 ENTRYPOINT reverse-proxy -addr=:5555
 
