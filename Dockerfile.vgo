@@ -17,6 +17,12 @@ RUN vgo test -cover ./...
 RUN rm -rf /go-alpine-patches; \
     apk del .build-deps;
 
-ENTRYPOINT reverse-proxy -addr=:5555
+
+FROM alpine:latest
+WORKDIR /root/
+COPY --from=0 /go/src/github.com/taland/reverse-proxy/reverse-proxy ./reverse-proxy
+
+CMD [ "./reverse-proxy", "-addr=:5555" ]
+# ENTRYPOINT reverse-proxy -addr=:5555
 
 EXPOSE 5555

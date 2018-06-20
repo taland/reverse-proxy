@@ -6,6 +6,12 @@
 $ docker build -t proxy .
 ```
 
+or
+
+```
+$ docker build -t proxy -f Dockerfile.vgo .
+```
+
 ## Run
 
 ```
